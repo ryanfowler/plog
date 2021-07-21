@@ -1,0 +1,15 @@
+[package]
+name = "plog"
+version = "0.1.0"
+edition = "2018"
+
+[profile.release]
+debug = false
+lto = true
+opt-level = 3
+
+[dependencies]
+chrono = { version = "0" }
+colored = { version = "2" }
+serde_json = { version = "1", features = ["preserve_order"] }
+tokio = { version = "1", features = ["io-std", "io-util", "macros", "rt", "signal"] }
