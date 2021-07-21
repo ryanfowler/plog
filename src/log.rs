@@ -64,7 +64,7 @@ impl Handler {
         self.buf.push_str(" {");
         for kv in log.kvs.iter() {
             if i > 0 {
-                self.buf.push_str(", ");
+                self.buf.push_str("  ");
             } else {
                 self.buf.push(' ');
             }
@@ -159,6 +159,13 @@ fn format_time(time: &str) -> String {
         }
         let time = Local.timestamp(out / 1e9 as i64, (out % 1e9 as i64) as u32);
         return format_time_str(time);
+    }
+
+    if let Ok(n) = DateTime::parse_from_rfc3339(time) {
+        return format_time_str(n.with_timezone(&Local));
+    }
+    if let Ok(n) = DateTime::parse_from_rfc2822(time) {
+        return format_time_str(n.with_timezone(&Local));
     }
 
     time.to_string()
