@@ -5,6 +5,7 @@ use tokio::signal;
 
 mod json;
 mod log;
+mod logfmt;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
@@ -15,6 +16,7 @@ async fn main() {
 
     let mut formats = Vec::new();
     formats.push(json::JsonFormat::new());
+    formats.push(logfmt::LogFormat::new());
     let mut handler = log::Handler::new(formats);
 
     let mut stdout = BufWriter::new(io::stdout());
