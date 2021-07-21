@@ -28,7 +28,10 @@ impl Handler {
 
         match self.parse_kvs(s) {
             Some(kvs) => self.format_log(Log::new(kvs)),
-            None => self.buf.push_str(s),
+            None => {
+                self.buf.push_str(s);
+                self.buf.push_str("\r\n");
+            }
         };
 
         &self.buf
@@ -140,7 +143,8 @@ fn format_level(level: &str) -> String {
         "debug" => level.blue(),
         "info" => level.green(),
         "warn" | "warning" => level.yellow(),
-        "fatal" | "panic" => level.red(),
+        "error" => level.red(),
+        "fatal" | "panic" => level.white().on_red(),
         _ => level.white(),
     }
     .bold()
