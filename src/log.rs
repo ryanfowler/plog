@@ -13,6 +13,7 @@ pub struct KeyVal {
 pub struct Handler {
     buf: String,
     formats: Vec<Box<dyn Format>>,
+    max_field_len: usize,
 }
 
 impl Handler {
@@ -20,6 +21,7 @@ impl Handler {
         return Handler {
             buf: String::new(),
             formats,
+            max_field_len: 42,
         };
     }
 
@@ -59,7 +61,7 @@ impl Handler {
         }
 
         if let Some(msg) = log.msg {
-            self.buf.push_str(&msg.italic().to_string());
+            self.buf.push_str(&msg);
             self.buf.push_str(" ");
         }
 
@@ -73,10 +75,11 @@ impl Handler {
             }
             i += 1;
 
-            self.buf.push_str(&kv.key);
+            self.buf.push_str(&kv.key.cyan().to_string());
             self.buf.push_str(": ");
-            if kv.val.len() > 32 {
-                self.buf.push_str(&kv.val[..32].dimmed().to_string());
+            if kv.val.len() > self.max_field_len {
+                self.buf
+                    .push_str(&kv.val[..self.max_field_len].dimmed().to_string());
                 self.buf.push_str("...");
             } else {
                 self.buf.push_str(&kv.val.dimmed().to_string());
