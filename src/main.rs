@@ -1,22 +1,12 @@
-use std::process;
-
-use tokio::io::{self, AsyncBufReadExt, AsyncWriteExt, BufReader, BufWriter};
-use tokio::signal;
-
 mod json;
 mod log;
 mod logfmt;
 
+use tokio::io::{self, AsyncBufReadExt, AsyncWriteExt, BufReader, BufWriter};
+
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
-    tokio::spawn(async {
-        signal::ctrl_c().await.unwrap();
-        process::exit(0);
-    });
-
-    let mut formats = Vec::new();
-    formats.push(json::JsonFormat::new());
-    formats.push(logfmt::LogFormat::new());
+    let formats = vec![json::JsonFormat::new(), logfmt::LogFormat::new()];
     let mut handler = log::Handler::new(formats);
 
     let mut stdout = BufWriter::new(io::stdout());
