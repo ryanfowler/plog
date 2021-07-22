@@ -12,6 +12,10 @@ impl LogFormat {
 
 impl log::Format for &LogFormat {
     fn parse_log(&self, s: &str) -> Option<Vec<log::KeyVal>> {
+        if !s.contains("=") {
+            return None;
+        }
+
         let pairs = logfmt::parse(s);
 
         let mut out = Vec::new();
