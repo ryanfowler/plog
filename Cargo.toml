@@ -14,4 +14,4 @@ colored = { version = "2" }
 logfmt = { version = "0" }
 serde_json = { version = "1", features = ["preserve_order"] }
 structopt = { version = "0.3" }
-tokio = { version = "1", features = ["io-std", "io-util", "macros", "rt", "signal"] }
+tokio = { version = "1", features = ["io-std", "io-util", "macros", "rt"] }
