@@ -1,18 +1,16 @@
-use logfmt;
-
 use super::log;
 
 pub struct LogFormat;
 
 impl LogFormat {
-    pub fn new() -> Box<dyn log::Format + 'static> {
-        return Box::new(&LogFormat);
+    pub fn new_box() -> Box<dyn log::Format + 'static> {
+        Box::new(&LogFormat)
     }
 }
 
 impl log::Format for &LogFormat {
     fn parse_log(&self, s: &str) -> Option<Vec<log::KeyVal>> {
-        if !s.contains("=") {
+        if !s.contains('=') {
             return None;
         }
 
@@ -22,7 +20,7 @@ impl log::Format for &LogFormat {
         for pair in pairs {
             out.push(log::KeyVal {
                 key: pair.key,
-                val: pair.val.unwrap_or("".to_string()),
+                val: pair.val.unwrap_or_else(|| "".to_string()),
             });
         }
 

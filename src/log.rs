@@ -18,11 +18,11 @@ pub struct Handler {
 
 impl Handler {
     pub fn new(formats: Vec<Box<dyn Format>>) -> Self {
-        return Handler {
+        Handler {
             buf: String::new(),
             formats,
             max_field_len: 42,
-        };
+        }
     }
 
     pub fn handle(&mut self, s: &str) -> &String {
@@ -51,7 +51,7 @@ impl Handler {
     fn format_log(&mut self, log: Log) {
         if let Some(time) = log.time {
             self.buf.push_str(&time.blue().dimmed().to_string());
-            self.buf.push_str(" ");
+            self.buf.push(' ');
         }
 
         if let Some(level) = log.level {
@@ -62,18 +62,16 @@ impl Handler {
 
         if let Some(msg) = log.msg {
             self.buf.push_str(&msg);
-            self.buf.push_str(" ");
+            self.buf.push(' ');
         }
 
-        let mut i: i32 = 0;
         self.buf.push_str(" {");
-        for kv in log.kvs.iter() {
+        for (i, kv) in log.kvs.iter().enumerate() {
             if i > 0 {
                 self.buf.push_str("  ");
             } else {
                 self.buf.push(' ');
             }
-            i += 1;
 
             self.buf.push_str(&kv.key.cyan().to_string());
             self.buf.push_str(": ");

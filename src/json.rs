@@ -5,8 +5,8 @@ use super::log;
 pub struct JsonFormat;
 
 impl JsonFormat {
-    pub fn new() -> Box<dyn log::Format + 'static> {
-        return Box::new(&JsonFormat);
+    pub fn new_box() -> Box<dyn log::Format + 'static> {
+        Box::new(&JsonFormat)
     }
 }
 

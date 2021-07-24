@@ -6,7 +6,7 @@ use tokio::io::{self, AsyncBufReadExt, AsyncWriteExt, BufReader, BufWriter};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> io::Result<()> {
-    let formats = vec![json::JsonFormat::new(), logfmt::LogFormat::new()];
+    let formats = vec![json::JsonFormat::new_box(), logfmt::LogFormat::new_box()];
     let mut handler = log::Handler::new(formats);
 
     let mut stdout = BufWriter::new(io::stdout());
