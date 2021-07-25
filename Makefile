@@ -12,8 +12,10 @@ all:
 build:
 	@docker build -t plog .
 
+.PHONY: lint
 lint: build
 	@docker run -i --rm --name plog plog cargo clippy
 
+.PHONY: test
 test: build
 	@docker run -i --rm --name plog plog cargo test
