@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-    - name: lint
-      run: |
-        rustup component add clippy
-        cargo clippy -- -D warnings
-    - name: test
-      run: cargo test --verbose
     - name: build
-      run: cargo build --release --verbose
+      run: make build
+    - name: lint
+      run: make lint
+    - name: test
+      run: make test
