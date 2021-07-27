@@ -10,11 +10,14 @@ async fn main() -> io::Result<()> {
     let mut handler = log::Handler::new(formats);
 
     let mut stdout = BufWriter::new(io::stdout());
-    let mut lines = BufReader::new(io::stdin()).lines();
-    while let Some(line) = lines.next_line().await? {
-        let out = handler.handle(&line);
-        stdout.write(out.as_bytes()).await?;
+    let mut stdin = BufReader::new(io::stdin());
+
+    let mut buf = String::new();
+    while stdin.read_line(&mut buf).await? > 0 {
+        let out = handler.handle(&buf.trim_end());
+        stdout.write_all(out.as_bytes()).await?;
         stdout.flush().await?;
+        buf.clear();
     }
     Ok(())
 }
