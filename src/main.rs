@@ -14,7 +14,7 @@ async fn main() -> io::Result<()> {
 
     let mut buf = String::new();
     while stdin.read_line(&mut buf).await? > 0 {
-        let out = handler.handle(&buf.trim_end());
+        let out = handler.handle(buf.trim_end());
         stdout.write_all(out.as_bytes()).await?;
         stdout.flush().await?;
         buf.clear();
