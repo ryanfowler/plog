@@ -16,7 +16,7 @@ impl log::Format for &LogFormat {
 
         let pairs = logfmt::parse(s);
 
-        let mut out = Vec::new();
+        let mut out = Vec::with_capacity(pairs.len());
         for pair in pairs {
             out.push(log::KeyVal {
                 key: pair.key,

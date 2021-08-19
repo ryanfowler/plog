@@ -17,7 +17,7 @@ impl log::Format for &JsonFormat {
             Err(_) => return None,
         };
 
-        let mut out = Vec::new();
+        let mut out = Vec::with_capacity(value.len());
         for (key, val) in value {
             let val = match val {
                 Value::String(v) => v,
