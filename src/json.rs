@@ -4,13 +4,7 @@ use super::log;
 
 pub struct JsonFormat;
 
-impl JsonFormat {
-    pub fn new_box() -> Box<dyn log::Format + 'static> {
-        Box::new(&JsonFormat)
-    }
-}
-
-impl log::Format for &JsonFormat {
+impl log::Format for JsonFormat {
     fn parse_log(&self, s: &str) -> Option<Vec<log::KeyVal>> {
         let value: Map<String, Value> = match from_str(s) {
             Ok(val) => val,

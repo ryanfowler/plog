@@ -55,9 +55,8 @@ impl Handler {
         }
 
         if let Some(level) = log.level {
-            self.buf.push('[');
             self.buf.push_str(&format_level(&level));
-            self.buf.push_str("] ");
+            self.buf.push(' ');
         }
 
         if let Some(msg) = log.msg {
@@ -65,10 +64,10 @@ impl Handler {
             self.buf.push(' ');
         }
 
-        self.buf.push_str(" {");
+        self.buf.push_str(" [");
         for (i, kv) in log.kvs.iter().enumerate() {
             if i > 0 {
-                self.buf.push_str("  ");
+                self.buf.push_str(", ");
             } else {
                 self.buf.push(' ');
             }
@@ -83,7 +82,7 @@ impl Handler {
                 self.buf.push_str(&kv.val.dimmed().to_string());
             }
         }
-        self.buf.push_str(&" }\r\n".clear().to_string());
+        self.buf.push_str(&" ]\r\n".clear().to_string());
     }
 }
 
@@ -135,17 +134,18 @@ impl Log {
     }
 }
 
-const LEVEL_FIELDS: &[&str] = &["level", "lvl", "loglvl"];
-const MESSAGE_FIELDS: &[&str] = &["msg", "message"];
-const TIME_FIELDS: &[&str] = &["time", "ts", "timestamp"];
+static LEVEL_FIELDS: &[&str] = &["level", "lvl", "loglvl"];
+static MESSAGE_FIELDS: &[&str] = &["msg", "message"];
+static TIME_FIELDS: &[&str] = &["time", "ts", "timestamp"];
 
 fn format_level(level: &str) -> String {
-    match level {
-        "debug" => level.blue(),
-        "info" => level.green(),
-        "warn" | "warning" => level.yellow(),
-        "error" => level.red(),
-        "fatal" | "panic" => level.white().on_red(),
+    match level.to_lowercase().as_str() {
+        "trace" => "TRACE".dimmed(),
+        "debug" => "DEBUG".blue(),
+        "info" => "INFO ".green(),
+        "warn" | "warning" => "WARN ".yellow(),
+        "error" => "ERROR".red(),
+        "fatal" | "panic" => "FATAL".white().on_red(),
         _ => level.white(),
     }
     .bold()

@@ -2,13 +2,7 @@ use super::log;
 
 pub struct LogFormat;
 
-impl LogFormat {
-    pub fn new_box() -> Box<dyn log::Format + 'static> {
-        Box::new(&LogFormat)
-    }
-}
-
-impl log::Format for &LogFormat {
+impl log::Format for LogFormat {
     fn parse_log(&self, s: &str) -> Option<Vec<log::KeyVal>> {
         if !s.contains('=') {
             return None;
