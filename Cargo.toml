@@ -1,17 +1,19 @@
 [package]
 name = "plog"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 [profile.release]
+codegen-units = 1
 debug = false
-lto = true
+lto = "fat"
 opt-level = 3
+strip = "debuginfo"
 
 [dependencies]
-chrono = { version = "0" }
-colored = { version = "2" }
-logfmt = { version = "0" }
-serde_json = { version = "1", features = ["preserve_order"] }
+chrono = { version = "0.4" }
+colored = { version = "2.0" }
+logfmt = { version = "0.0" }
+serde_json = { version = "1.0", features = ["preserve_order"] }
 structopt = { version = "0.3" }
-tokio = { version = "1", features = ["io-std", "io-util", "macros", "rt"] }
+tokio = { version = "1.19", features = ["io-std", "io-util", "macros", "rt"] }
