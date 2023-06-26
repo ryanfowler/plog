@@ -1,4 +1,4 @@
-FROM rust:1.62-slim-buster
+FROM rust:1.70-slim-buster
 
 RUN rustup component add clippy
 
